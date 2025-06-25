@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dupla Financeira</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="manifest" href="manifest.json">
+ <meta name="theme-color" content="#1e3f20">
+</head>
+<body>
+  <div class="container" id="app-container">
+    <div class="titulo-com-balao">
+      <h1>💵 Dupla Financeira</h1>
+      <div class="balao-lateral">
+        <img src="photo.jpg" alt="❤️">
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="abrirAba('financeiro')">📊 Finanças</button>
+      <button class="tab-btn" onclick="abrirAba('graficos')">📈 Gráficos</button>
+      <button class="tab-btn" onclick="abrirAba('resumo')">💡 Resumo</button>
+      <button class="tab-btn" onclick="abrirAba('categorias')">🏷️ Categorias</button>
+    </div>
+
+    <div id="financeiro" class="tab-content active">
+      <div class="form-section">
+        <div class="form">
+          <select id="tipo-transacao" onchange="carregarCategorias()">
+            <option value="receita">Receita</option>
+            <option value="gasto">Gasto</option>
+          </select>
+          <input type="date" id="data" required>
+          <input type="text" id="descricao" placeholder="Descrição" required>
+          <input type="number" id="valor" placeholder="R$ 0,00" step="0.01" required>
+          <select id="categoria"></select>
+          <select id="responsavel">
+            <option value="Raylane">Raylane</option>
+            <option value="Rafael">Rafael</option>
+          </select>
+          <button onclick="adicionarTransacao()">💾 Salvar</button>
+        </div>
+      </div>
+
+      <div class="table-section">
+        <h2>📋 Últimas Transações</h2>
+        <div class="table-container">
+          <table class="tabela-transacoes" id="tabela-transacoes">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Categoria</th>
+                <th>Responsável</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-tabela"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="graficos" class="tab-content">
+      <div class="charts-section">
+        <div class="chart-container">
+          <h2>📊 Receitas vs Gastos</h2>
+          <canvas id="grafico-barras"></canvas>
+        </div>
+        <div class="chart-container">
+          <h2>🍎 Gastos por Categoria</h2>
+          <canvas id="grafico-pizza"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="resumo" class="tab-content">
+      <div class="resumo-section">
+        <h2>💡 Resumo Mensal</h2>
+        <div id="resumo-mensal"></div>
+
+        <h2>📈 Metas Financeiras</h2>
+        <div class="form">
+          <input type="text" id="meta-nome" placeholder="Nome da Meta">
+          <input type="number" id="meta-valor" placeholder="Valor Total" step="0.01">
+          <button onclick="adicionarMeta()">➕ Adicionar Meta</button>
+        </div>
+        <div id="lista-metas"></div>
+
+        <h2>🚨 Alertas Financeiros</h2>
+        <div id="alertas"></div>
+      </div>
+    </div>
+
+    <div id="categorias" class="tab-content">
+      <h2>🏷️ Gerenciar Categorias</h2>
+      <div class="form">
+        <select id="tipo-categoria" onchange="carregarCategoriasGerenciar()">
+          <option value="receita">Receita</option>
+          <option value="gasto">Gasto</option>
+        </select>
+        <input type="text" id="nova-categoria" placeholder="Nova categoria">
+        <button onclick="adicionarCategoria()">➕ Adicionar</button>
+      </div>
+
+      <h3>Categorias Existentes</h3>
+      <div class="form">
+        <select id="categoria-existente"></select>
+        <button onclick="removerCategoria()">🗑️ Remover Selecionada</button>
+      </div>
+    </div>
+
+    <footer>
+      Desenvolvido por <strong>Antônio Rafael</strong> | Versão 2.4
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
