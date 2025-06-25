@@ -7,7 +7,11 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="manifest" href="manifest.json">
- <meta name="theme-color" content="#1e3f20">
+  <meta name="theme-color" content="#1e3f20">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-152x152.png">
 </head>
 <body>
   <div class="container" id="app-container">
@@ -114,10 +118,31 @@
     </div>
 
     <footer>
-      Desenvolvido por <strong>Antônio Rafael</strong> | Versão 2.4
+      Desenvolvido por <strong>Antônio Rafael</strong> | Versão 2.5
     </footer>
   </div>
 
   <script type="module" src="app.js"></script>
+  <script>
+    // Registrar Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registrado com sucesso:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Falha ao registrar ServiceWorker:', error);
+          });
+      });
+    }
+    
+    // Detectar se está em modo PWA
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('Executando como PWA');
+      }
+    });
+  </script>
 </body>
 </html>
