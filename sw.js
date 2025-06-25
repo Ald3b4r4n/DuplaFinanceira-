@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dupla-financeira-v3.7';
+const CACHE_NAME = 'dupla-financeira-v3.8';
 const ASSETS_TO_CACHE = [
   'index.html',
   'style.css',
@@ -12,6 +12,7 @@ const ASSETS_TO_CACHE = [
   'icons/icon-192x192.png',
   'icons/icon-384x384.png',
   'icons/icon-512x512.png',
+  'manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js'
 ];
 
@@ -19,9 +20,7 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
   );
 });
 
@@ -40,7 +39,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Estratégia: Cache-first, falling back to network
+// Estratégia: Cache-first
 self.addEventListener('fetch', (event) => {
   // Ignorar requisições do Firebase
   if (event.request.url.includes('firebase') || 
@@ -59,16 +58,18 @@ self.addEventListener('fetch', (event) => {
 
         // Para requisições de navegação, retorna a página inicial
         if (event.request.mode === 'navigate') {
-          return caches.match('index.html');
+          return caches.match('/index.html');
         }
 
         // Para outras requisições, busca na rede
-        return fetch(event.request).catch(() => {
-          // Fallback para página inicial se offline
-          if (event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('index.html');
-          }
-        });
+        return fetch(event.request);
       })
   );
+});
+
+// Mensagem para atualizar o cache quando nova versão disponível
+self.addEventListener('message', (event) => {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });
